@@ -31,7 +31,7 @@ class WeatherController extends GetxController {
     }
   }
 
-  updateLocalData(Weather newData) {
+  void updateLocalData(Weather newData) {
     weather.update((val) {
       if (val != null) {
         val.current = newData.current;

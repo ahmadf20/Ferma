@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:ferma/utils/formatting.dart';
 import 'package:ferma/utils/logger.dart';
@@ -16,6 +14,12 @@ class HomeController extends GetxController {
 
   RxBool isLoading = true.obs;
 
+  RxInt carouselIndex = 0.obs;
+
+  void updateCarouselIndex(int val) {
+    carouselIndex.value = val;
+  }
+
   void updateLocation() async {
     BotToast.showLoading();
     Position position = await Geolocator.getCurrentPosition();
@@ -29,10 +33,11 @@ class HomeController extends GetxController {
   }
 
   void initLocation() async {
-    Map positions =
-        await (SharedPrefs.getPosition() as FutureOr<Map<dynamic, dynamic>>);
+    Map? positions = await (SharedPrefs.getPosition());
     logger.i(positions);
-    if (positions['latitude'] != null && positions['longitude'] != null) {
+    if (positions != null &&
+        positions['latitude'] != null &&
+        positions['longitude'] != null) {
       address.value = await GeneralFormat.printLocation(
           positions['latitude'], positions['longitude']);
       updateLatLong(positions['latitude'], positions['longitude']);

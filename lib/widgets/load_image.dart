@@ -10,7 +10,7 @@ Widget loadImage(
   bool isShowLoading = true,
   Alignment alignment = Alignment.center,
   bool hasErrorWidget = true,
-  Color /*?*/ /*!*/ /*?*/ /*?*/ ? color,
+  Color? color,
   BoxFit boxFit = BoxFit.cover,
   double? width,
   double? height,
@@ -21,9 +21,9 @@ Widget loadImage(
     try {
       Widget image = CachedNetworkImage(
         fit: boxFit,
-        color: color!,
-        height: height!,
-        width: width!,
+        color: color,
+        height: height,
+        width: width,
         imageUrl: Uri.encodeFull('$linkGambar'),
         alignment: alignment,
         placeholder: (context, url) {

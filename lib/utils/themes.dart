@@ -8,6 +8,7 @@ ThemeData themeData = ThemeData(
   canvasColor: MyColors.canvas,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   accentColor: MyColors.grey,
+  fontFamily: 'Poppins',
 );
 
 SystemUiOverlayStyle mySystemUIOverlaySyle = SystemUiOverlayStyle(

@@ -24,9 +24,9 @@ class SharedPrefs {
     await prefs.setDouble('longitude', longitude);
   }
 
-  static Future<Map<String, double?>?> getPosition() async {
+  static Future<Map<dynamic, dynamic?>?> getPosition() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, double?>? position;
+    Map<dynamic, dynamic?>? position;
     try {
       position = {
         'latitude': prefs.getDouble('latitude'),

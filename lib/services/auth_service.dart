@@ -1,55 +1,70 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:ferma/models/user_model.dart';
 import 'package:ferma/utils/const.dart';
+import 'package:ferma/utils/dio_configs.dart';
 import 'package:ferma/utils/logger.dart';
-import 'package:ferma/utils/shared_preferences.dart';
 
-Future login(String username, String password) async {
-  try {
-    Response res = await Dio()
-        .post('$url/login', data: {'username': username, 'password': password});
+class AuthService {
+  static Future login(
+    String username,
+    String password, {
+    Function(Map?)? callback,
+  }) async {
+    try {
+      Response res = await dio.post(
+        '/auth/login',
+        data: {
+          'username': username,
+          'password': password,
+        },
+      );
 
-    logger.v(res);
-    if (res.data['token'] != null) {
-      SharedPrefs.setToken(res.data['token']);
-      return true;
+      logger.v(json.decode(res.toString()));
+
+      if (res.data['status'] >= 200 && res.data['status'] < 300) {
+        if (callback != null) callback(res.data['data']);
+        return User.fromJson(res.data['data']['user']);
+      }
+      return res.data['message'];
+    } on DioError catch (e) {
+      logger.e(e);
+      if (e.response != null) {
+        return e.response?.data['message'];
+      } else {
+        return ErrorMessage.connection;
+      }
+    } catch (e) {
+      logger.e(e);
+      return ErrorMessage.general;
     }
-    return false;
-  } on DioError catch (e) {
-    logger.e(e);
-    if (e.response != null) {
-      return e.response?.data['message'];
-    } else {
-      return ErrorMessage.connection;
-    }
-  } catch (e) {
-    logger.e(e);
-    return ErrorMessage.general;
   }
-}
 
-Future register(Map data) async {
-  try {
-    Response res = await Dio().post('$url/register', data: data);
+  static Future register(
+    Map<String, dynamic> data, {
+    Function(Map?)? callback,
+  }) async {
+    try {
+      Response res = await dio.post('/auth/register', data: data);
 
-    if (res.data['token'] != null) {
-      SharedPrefs.setToken(res.data['token']);
-      return true;
+      logger.v(json.decode(res.toString()));
+
+      if (res.data['status'] >= 200 && res.data['status'] < 300) {
+        if (callback != null) callback(res.data['data']);
+        return User.fromJson(res.data['data']['user']);
+      }
+      return res.data['message'];
+    } on DioError catch (e) {
+      logger.e(e);
+      if (e.response != null) {
+        return e.response?.data['message'];
+      } else {
+        return ErrorMessage.connection;
+      }
+    } catch (e) {
+      logger.e(e);
+      return ErrorMessage.general;
     }
-    return false;
-  } on DioError catch (e) {
-    logger.e(e);
-    if (e.response != null) {
-      if (e.response!.data['message'] != null)
-        return e.response!.data['message'];
-      if (e.response!.data['email'] != null)
-        return e.response!.data['email'][0];
-      if (e.response!.data['username'] != null)
-        return e.response!.data['username'][0];
-    } else {
-      return ErrorMessage.connection;
-    }
-  } catch (e) {
-    logger.e(e);
-    return ErrorMessage.general;
   }
 }

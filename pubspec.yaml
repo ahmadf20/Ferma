@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   bot_toast: ^4.0.1
   cached_network_image: ^3.0.0
+  carousel_slider: ^4.0.0-nullsafety.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
   flutter_html: ^1.3.0
@@ -39,6 +40,7 @@ dependencies:
   percent_indicator: ^3.0.1
   rxdart: ^0.26.0
   shared_preferences: ^2.0.5
+  smooth_page_indicator: ^0.3.0-nullsafety.0
   timeago: ^3.0.2
 
 dev_dependencies:

@@ -1,9 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:ferma/models/user_model.dart';
 import 'package:ferma/screens/home_screen.dart';
 import 'package:ferma/services/auth_service.dart';
 import 'package:ferma/utils/const.dart';
 import 'package:ferma/utils/custom_bot_toast.dart';
 import 'package:ferma/utils/my_colors.dart';
+import 'package:ferma/utils/shared_preferences.dart';
 import 'package:ferma/widgets/my_app_bar.dart';
 import 'package:ferma/widgets/my_flat_button.dart';
 import 'package:ferma/widgets/my_text_field.dart';
@@ -14,16 +16,14 @@ import 'package:get/get.dart';
 enum AuthState { login, register }
 
 class AuthScreen extends StatefulWidget {
-  final AuthState authState;
-
-  AuthScreen({Key? key, this.authState = AuthState.login}) : super(key: key);
+  AuthScreen({Key? key}) : super(key: key);
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthState? state;
+  AuthState state = AuthState.login;
 
   TextEditingController emailTC = TextEditingController();
   TextEditingController nameTC = TextEditingController();
@@ -34,14 +34,20 @@ class _AuthScreenState extends State<AuthScreen> {
     if (usernameTC.text.isEmpty || passwordTC.text.isEmpty) return;
 
     BotToast.showLoading();
-    login(usernameTC.text, passwordTC.text).then((res) {
-      if (res == true)
+    await AuthService.login(
+      usernameTC.text,
+      passwordTC.text,
+      callback: (value) {
+        if (value != null) SharedPrefs.setToken(value['token']);
+      },
+    ).then((res) {
+      if (res is User) {
+        customBotToastText('Login success!');
         Get.offAll(HomeScreen());
-      else
+      } else {
         customBotToastText(res);
-    }).whenComplete(() {
-      BotToast.closeAllLoading();
-    });
+      }
+    }).whenComplete(BotToast.closeAllLoading);
   }
 
   Future registerHandler() async {
@@ -51,26 +57,25 @@ class _AuthScreenState extends State<AuthScreen> {
         emailTC.text.isEmpty) return;
 
     BotToast.showLoading();
-    Map data = {
+    Map<String, dynamic> data = {
       'username': usernameTC.text,
       'email': emailTC.text,
       'password': passwordTC.text,
       'name': nameTC.text,
     };
-    register(data).then((res) {
-      if (res == true)
+    await AuthService.register(
+      data,
+      callback: (value) {
+        if (value != null) SharedPrefs.setToken(value['token']);
+      },
+    ).then((res) {
+      if (res is User) {
+        customBotToastText('Register success!');
         Get.offAll(HomeScreen());
-      else
+      } else {
         customBotToastText(res);
-    }).whenComplete(() {
-      BotToast.closeAllLoading();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    state = widget.authState;
+      }
+    }).whenComplete(BotToast.closeAllLoading);
   }
 
   @override
@@ -117,8 +122,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           label: 'Email Address',
                           controller: emailTC,
                           validator: (val) {
-                            if (!(val?.isEmail ?? false))
+                            if (!(val?.isEmail ?? false)) {
                               return 'Enter a valid email adress';
+                            }
                           },
                         ),
                         SizedBox(height: 15),
@@ -144,10 +150,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     text:
                         state == AuthState.login ? 'Sign In' : 'Create Account',
                     onPressed: () {
-                      if (state == AuthState.login)
+                      if (state == AuthState.login) {
                         loginHandler();
-                      else
+                      } else {
                         registerHandler();
+                      }
                     },
                   ),
                   SizedBox(height: 25),
