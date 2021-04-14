@@ -1,4 +1,5 @@
 import 'package:ferma/models/user_model.dart';
+import 'package:ferma/screens/auth_screen.dart';
 import 'package:get/get.dart';
 import 'package:ferma/services/user_services.dart';
 import 'package:ferma/utils/const.dart';
@@ -10,6 +11,7 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
+    //TODO: Add function to refresh token
     fetchUserData();
     super.onInit();
   }
@@ -17,6 +19,11 @@ class ProfileController extends GetxController {
   void fetchUserData() async {
     try {
       await getUser().then((res) {
+        if (res is String &&
+            res.toString().toLowerCase().contains('unauthorized')) {
+          Get.offAll(() => AuthScreen());
+        }
+
         if (res is User) {
           updateUser(res);
         } else {

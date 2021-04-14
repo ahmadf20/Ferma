@@ -86,6 +86,10 @@ class HomeScreen extends StatelessWidget {
               ),
               Spacer(),
               TextButton(
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all(MyColors.primary.withAlpha(50)),
+                ),
                 child: Row(
                   children: [
                     Text(
@@ -271,6 +275,10 @@ class HomeScreen extends StatelessWidget {
               ),
               Spacer(),
               TextButton(
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all(MyColors.primary.withAlpha(50)),
+                ),
                 child: Row(
                   children: [
                     Text(

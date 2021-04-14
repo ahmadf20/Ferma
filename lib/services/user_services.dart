@@ -17,11 +17,10 @@ Future getUser() async {
 
     logger.v(json.decode(res.toString()));
 
-    if (res.data['data'] != null) {
+    if (res.data['status'] >= 200 && res.data['status'] < 300) {
       return User.fromJson(res.data['data']);
-    } else {
-      return 'Failed to fetch data';
     }
+    return res.data['message'];
   } on DioError catch (e) {
     logger.e(e);
     if (e.response != null) {
