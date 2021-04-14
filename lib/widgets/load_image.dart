@@ -14,6 +14,7 @@ Widget loadImage(
   BoxFit boxFit = BoxFit.cover,
   double? width,
   double? height,
+  String? baseUrl,
 }) {
   if (linkGambar == null || linkGambar.isEmpty) {
     return Icon(Icons.error_outline);
@@ -24,7 +25,7 @@ Widget loadImage(
         color: color,
         height: height,
         width: width,
-        imageUrl: Uri.encodeFull('$linkGambar'),
+        imageUrl: Uri.encodeFull(baseUrl ?? '' '$linkGambar'),
         alignment: alignment,
         placeholder: (context, url) {
           if (isShowLoading) {

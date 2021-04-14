@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ferma/controllers/home_controller.dart';
 import 'package:ferma/controllers/profile_controller.dart';
 import 'package:ferma/controllers/weather_controller.dart';
+import 'package:ferma/screens/profile/profile_screen.dart';
 import 'package:ferma/screens/weather_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
 import 'package:ferma/utils/my_text_style.dart';
@@ -35,47 +36,49 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(25, 40, 25, 0),
         children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                padding: EdgeInsets.all(0),
-                icon: Image.asset(
-                  'assets/images/default_profile_picture.png',
-                  width: 45,
-                  height: 45,
+          Obx(
+            () => Row(
+              children: [
+                IconButton(
+                  onPressed: () => Get.to(() => ProfileScreen()),
+                  padding: EdgeInsets.all(0),
+                  icon: Image.asset(
+                    'assets/images/default_profile_picture.png',
+                    width: 45,
+                    height: 45,
+                  ),
                 ),
-              ),
-              SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello!',
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontSize: 12,
-                      color: MyColors.grey,
-                      fontWeight: FontWeight.w600,
+                SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello!',
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 12,
+                        color: MyColors.grey,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 2.5),
-                  Text(
-                    profileController.user.value.username ?? '',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: MyColors.darkGrey,
-                      fontWeight: FontWeight.w600,
+                    SizedBox(height: 2.5),
+                    Text(
+                      profileController.user.value.username ?? 'User',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: MyColors.darkGrey,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Spacer(),
-              IconButton(
-                icon: Icon(Icons.settings_outlined),
-                onPressed: () {},
-              ),
-            ],
+                  ],
+                ),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.settings_outlined),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 40),
           Row(

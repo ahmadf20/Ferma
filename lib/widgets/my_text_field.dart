@@ -31,12 +31,12 @@ class MyTextField extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 15, 15, 12.5),
       decoration: BoxDecoration(
-        color: fillColor ?? Color(0xfff7f5f2),
+        color: fillColor ?? Color(0xffFCFCFC),
         border: Border.all(
           width: 1.00,
           color: Color(0xfff0f0f0),
         ),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
         controller: controller,

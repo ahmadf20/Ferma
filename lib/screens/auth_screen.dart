@@ -9,6 +9,7 @@ import 'package:ferma/utils/shared_preferences.dart';
 import 'package:ferma/widgets/my_app_bar.dart';
 import 'package:ferma/widgets/my_flat_button.dart';
 import 'package:ferma/widgets/my_text_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -27,8 +28,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
   TextEditingController emailTC = TextEditingController();
   TextEditingController nameTC = TextEditingController();
-  TextEditingController usernameTC = TextEditingController();
-  TextEditingController passwordTC = TextEditingController();
+  TextEditingController usernameTC =
+      TextEditingController(text: kDebugMode ? 'afaaiz2' : '');
+  TextEditingController passwordTC =
+      TextEditingController(text: kDebugMode ? '12345' : '');
 
   Future loginHandler() async {
     if (usernameTC.text.isEmpty || passwordTC.text.isEmpty) return;

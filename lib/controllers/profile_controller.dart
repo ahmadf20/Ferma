@@ -18,7 +18,7 @@ class ProfileController extends GetxController {
 
   void fetchUserData() async {
     try {
-      await getUser().then((res) {
+      await UserService.getUser().then((res) {
         if (res is String &&
             res.toString().toLowerCase().contains('unauthorized')) {
           Get.offAll(() => AuthScreen());
@@ -33,18 +33,20 @@ class ProfileController extends GetxController {
     } catch (e) {
       customBotToastText(ErrorMessage.general);
     } finally {
-      isLoading.toggle();
+      if (isLoading.value) isLoading.toggle();
     }
   }
 
   void updateUser(User? newUser) {
     user.update((val) {
-      val?.name = newUser?.name;
-      val?.email = newUser?.email;
-      val?.id = newUser?.id;
-      val?.location = newUser?.location;
-      val?.profilePicture = newUser?.profilePicture;
-      val?.username = newUser?.username;
+      if (val != null) {
+        val.name = newUser?.name;
+        val.email = newUser?.email;
+        val.id = newUser?.id;
+        val.location = newUser?.location;
+        val.profilePicture = newUser?.profilePicture;
+        val.username = newUser?.username;
+      }
     });
   }
 }
