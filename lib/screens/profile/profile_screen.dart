@@ -1,4 +1,3 @@
-import 'package:ferma/utils/const.dart';
 import 'package:ferma/utils/shared_preferences.dart';
 import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:flutter/material.dart';

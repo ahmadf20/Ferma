@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ferma/controllers/article_controller.dart';
 import 'package:ferma/controllers/home_controller.dart';
 import 'package:ferma/controllers/profile_controller.dart';
 import 'package:ferma/controllers/weather_controller.dart';
+import 'package:ferma/screens/article/articles_screen.dart';
 import 'package:ferma/screens/profile/profile_screen.dart';
 import 'package:ferma/screens/weather_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
@@ -18,6 +20,7 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final WeatherController weatherController = Get.put(WeatherController());
   final ProfileController profileController = Get.put(ProfileController());
+  final ArticleController articleController = Get.put(ArticleController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +42,28 @@ class HomeScreen extends StatelessWidget {
           Obx(
             () => Row(
               children: [
-                IconButton(
-                  onPressed: () => Get.to(() => ProfileScreen()),
-                  padding: EdgeInsets.all(0),
-                  icon: Image.asset(
-                    'assets/images/default_profile_picture.png',
-                    width: 45,
-                    height: 45,
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha((8 / 100 * 255).toInt()),
+                      blurRadius: 25,
+                      offset: Offset(0, 3),
+                    )
+                  ]),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: (profileController
+                                    .user.value.profilePicture?.isNotEmpty ??
+                                false) &&
+                            profileController.user.value.profilePicture != null
+                        ? loadImage(
+                            profileController.user.value.profilePicture,
+                          )
+                        : Image.asset(
+                            'assets/images/default_profile_picture.png',
+                          ),
                   ),
                 ),
                 SizedBox(width: 15),
@@ -75,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                 Spacer(),
                 IconButton(
                   icon: Icon(Icons.settings_outlined),
-                  onPressed: () {},
+                  onPressed: () => Get.to(() => ProfileScreen()),
                 ),
               ],
             ),
@@ -110,7 +128,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () => Get.to(() => ArticlesScreen()),
               ),
             ],
           ),
@@ -182,6 +200,7 @@ class HomeScreen extends StatelessWidget {
           ),
           SizedBox(height: 35),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Container(

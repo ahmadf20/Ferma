@@ -8,10 +8,13 @@ class MyTextField extends StatelessWidget {
   final String? errorText;
   final String? hintText;
   final Widget? suffix;
+  final Widget? suffixIcon;
   final Color? fillColor;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final Function? onChanged;
+  final TextStyle? inputTextStyle;
+  final bool autoFocus;
 
   const MyTextField({
     Key? key,
@@ -22,8 +25,11 @@ class MyTextField extends StatelessWidget {
     this.validator,
     this.hintText,
     this.suffix,
+    this.suffixIcon,
     this.onChanged,
     this.fillColor,
+    this.inputTextStyle,
+    this.autoFocus = false,
   }) : super(key: key);
 
   @override
@@ -43,11 +49,11 @@ class MyTextField extends StatelessWidget {
         onChanged: onChanged as void Function(String)?,
         obscureText: obscureText,
         style: TextStyle(
-          fontFamily: 'Poppins',
           fontWeight: FontWeight.w600,
           color: MyColors.darkGrey,
-        ),
+        ).merge(inputTextStyle),
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        autofocus: autoFocus,
         validator: validator,
         decoration: InputDecoration(
           labelStyle: TextStyle(
@@ -60,6 +66,8 @@ class MyTextField extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
           suffix: suffix,
+          suffixIcon: suffixIcon,
+          suffixIconConstraints: BoxConstraints(maxHeight: 48, minHeight: 24),
           isDense: true,
           labelText: label,
           errorText: errorText,
