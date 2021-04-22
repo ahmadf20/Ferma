@@ -21,6 +21,9 @@ class ArticleController extends GetxController {
     super.onInit();
   }
 
+  List<Article> get getLatestArticle =>
+      articles.sublist(0, articles.length > 4 ? 4 : articles.length);
+
   void updateActiveCategory(String category) {
     selectedCategory.value = category.toString();
   }

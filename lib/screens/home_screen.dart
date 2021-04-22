@@ -3,6 +3,7 @@ import 'package:ferma/controllers/article_controller.dart';
 import 'package:ferma/controllers/home_controller.dart';
 import 'package:ferma/controllers/profile_controller.dart';
 import 'package:ferma/controllers/weather_controller.dart';
+import 'package:ferma/models/article_model.dart';
 import 'package:ferma/screens/article/articles_screen.dart';
 import 'package:ferma/screens/profile/profile_screen.dart';
 import 'package:ferma/screens/weather_screen.dart';
@@ -13,6 +14,8 @@ import 'package:ferma/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import 'article/article_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -133,53 +136,62 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 17),
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 170,
-              autoPlay: true,
-              viewportFraction: 1,
-              autoPlayInterval: Duration(seconds: 5),
-              onPageChanged: (index, reason) {
-                homeController.updateCarouselIndex(index);
-              },
-            ),
-            items: [0, 1, 2, 3, 4, 5].map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: EdgeInsets.fromLTRB(21, 17, 21, 17),
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://www.planradar.com/wp-content/uploads/2019/06/the-high-line.jpg',
+          Obx(
+            () => CarouselSlider(
+              options: CarouselOptions(
+                height: 170,
+                autoPlay: true,
+                viewportFraction: 1,
+                autoPlayInterval: Duration(seconds: 5),
+                onPageChanged: (index, reason) {
+                  homeController.updateCarouselIndex(index);
+                },
+              ),
+              items: articleController.getLatestArticle.map((Article item) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return GestureDetector(
+                      onTap: () => Get.to(
+                        ArticleDetailScreen(
+                          data: item,
                         ),
-                        fit: BoxFit.cover,
-                        colorFilter:
-                            ColorFilter.mode(Colors.black26, BlendMode.darken),
                       ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'What is Urban Farming and is it Profitable?',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(21, 17, 21, 17),
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              item.picture ?? '',
+                            ),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black26, BlendMode.darken),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.title ?? '-',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
           ),
           SizedBox(height: 20),
           Obx(
@@ -187,7 +199,7 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.only(left: 25),
               child: AnimatedSmoothIndicator(
                 activeIndex: homeController.carouselIndex.value,
-                count: 6,
+                count: articleController.getLatestArticle.length,
                 effect: ExpandingDotsEffect(
                   dotHeight: 6,
                   dotWidth: 6,

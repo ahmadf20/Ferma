@@ -1,5 +1,6 @@
 import 'package:ferma/models/user_model.dart';
 import 'package:ferma/screens/auth_screen.dart';
+import 'package:ferma/utils/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:ferma/services/user_services.dart';
 import 'package:ferma/utils/const.dart';
@@ -22,6 +23,7 @@ class ProfileController extends GetxController {
         if (res is String &&
             res.toString().toLowerCase().contains('unauthorized')) {
           Get.offAll(() => AuthScreen());
+          SharedPrefs.logOut();
         }
 
         if (res is User) {
