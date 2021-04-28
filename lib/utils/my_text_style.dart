@@ -9,4 +9,9 @@ class MyTextStyle {
     fontWeight: FontWeight.w700,
     color: MyColors.darkGrey,
   );
+  static TextStyle sectionSubText = TextStyle(
+    fontFamily: 'OpenSans',
+    fontSize: 14,
+    color: MyColors.grey,
+  );
 }

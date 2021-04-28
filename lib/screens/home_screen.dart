@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'article/article_detail_screen.dart';
+import 'plant/catalog_plant_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -36,8 +37,8 @@ class HomeScreen extends StatelessWidget {
           color: Colors.white,
           size: 25,
         ),
-        onPressed: () {},
-        // onPressed: () => Get.to(CatalogPlantScreen()),
+        elevation: 1,
+        onPressed: () => Get.to(CatalogPlantScreen()),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(25, 40, 25, 0),
@@ -194,21 +195,24 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
+
           Obx(
-            () => Padding(
-              padding: EdgeInsets.only(left: 25),
-              child: AnimatedSmoothIndicator(
-                activeIndex: homeController.carouselIndex.value,
-                count: articleController.getLatestArticle.length,
-                effect: ExpandingDotsEffect(
-                  dotHeight: 6,
-                  dotWidth: 6,
-                  strokeWidth: 6,
-                  activeDotColor: MyColors.darkGrey,
-                  dotColor: Colors.grey[300]!,
-                ),
-              ),
-            ),
+            () => articleController.articles.isNotEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: AnimatedSmoothIndicator(
+                      activeIndex: homeController.carouselIndex.value,
+                      count: articleController.getLatestArticle.length,
+                      effect: ExpandingDotsEffect(
+                        dotHeight: 6,
+                        dotWidth: 6,
+                        strokeWidth: 6,
+                        activeDotColor: MyColors.darkGrey,
+                        dotColor: Colors.grey[300]!,
+                      ),
+                    ),
+                  )
+                : Container(),
           ),
           SizedBox(height: 35),
           Row(
@@ -403,7 +407,6 @@ class HomeScreen extends StatelessWidget {
 //                                 Text(
 //                                   data!.name!,
 //                                   style: TextStyle(
-//                                     fontFamily: 'Montserrat',
 //                                     fontSize: 16,
 //                                     fontWeight: FontWeight.w700,
 //                                     color: MyColors.darkGrey,
@@ -446,7 +449,6 @@ class HomeScreen extends StatelessWidget {
 //                               Text(
 //                                 '${data!.progress}%',
 //                                 style: TextStyle(
-//                                   fontFamily: 'Montserrat',
 //                                   fontSize: 20,
 //                                   fontWeight: FontWeight.w700,
 //                                   color: MyColors.darkGrey,

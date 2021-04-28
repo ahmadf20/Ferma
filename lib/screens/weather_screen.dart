@@ -208,7 +208,6 @@ class WeatherScreen extends StatelessWidget {
           Text(
             '${item.day!.mintempC?.toInt() ?? '-'}ºC',
             style: TextStyle(
-              fontFamily: 'Montserrat',
               fontSize: 16,
               fontWeight: FontWeight.w700,
               color: MyColors.darkGrey,
@@ -218,7 +217,6 @@ class WeatherScreen extends StatelessWidget {
           Text(
             '${item.day!.maxtempC?.toInt() ?? '-'}ºC',
             style: TextStyle(
-              fontFamily: 'Montserrat',
               fontSize: 14,
               fontWeight: FontWeight.w700,
               color: MyColors.grey,

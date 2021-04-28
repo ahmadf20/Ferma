@@ -1,25 +1,25 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:ferma/models/article_model.dart';
+import 'package:ferma/models/plant_model.dart';
 import 'package:ferma/utils/const.dart';
 import 'package:ferma/utils/dio_configs.dart';
 import 'package:ferma/utils/functions.dart';
 import 'package:ferma/utils/logger.dart';
 
-class ArticleService {
-  static Future getAllArticles() async {
+class PlantService {
+  static Future getCatalogPlant() async {
     try {
-      Response res = await dio.get('/article',
-          options: Options(
-            headers: await getHeader(),
-          ));
+      Response res = await dio.get(
+        '/plant',
+        options: Options(headers: await (getHeader())),
+      );
 
       logger.v(json.decode(res.toString()));
 
       if (res.data['status'] >= 200 && res.data['status'] < 300) {
         return (res.data['data'] as List)
-            .map((val) => Article.fromJson(val))
+            .map((val) => Plant.fromJson(val))
             .toList();
       }
       return res.data['message'];
@@ -36,17 +36,19 @@ class ArticleService {
     }
   }
 
-  static Future getDetailArticles(String id) async {
+  static Future addMyPlant(String? id, String name) async {
     try {
-      Response res = await dio.get('/article/$id',
-          options: Options(
-            headers: await getHeader(),
-          ));
+      Response res = await dio.post('/myplant',
+          data: {
+            "plant_id": id,
+            "name": name,
+          },
+          options: Options(headers: await getHeader()));
 
       logger.v(json.decode(res.toString()));
 
       if (res.data['status'] >= 200 && res.data['status'] < 300) {
-        return Article.fromJson(res.data['data']);
+        return res.data['success'];
       }
       return res.data['message'];
     } on DioError catch (e) {
@@ -62,9 +64,37 @@ class ArticleService {
     }
   }
 
-  static Future getAllCategory() async {
+  static Future getMyPlants() async {
     try {
-      Response res = await dio.get('/article/category',
+      Response res = await dio.get(
+        '/myplant',
+        options: Options(headers: await (getHeader())),
+      );
+
+      logger.v(json.decode(res.toString()));
+
+      if (res.data['status'] >= 200 && res.data['status'] < 300) {
+        return (res.data['data'] as List)
+            .map((val) => MyPlant.fromJson(val))
+            .toList();
+      }
+      return res.data['message'];
+    } on DioError catch (e) {
+      logger.e(e);
+      if (e.response != null) {
+        return e.response?.data['message'];
+      } else {
+        return ErrorMessage.connection;
+      }
+    } catch (e) {
+      logger.e(e);
+      return ErrorMessage.general;
+    }
+  }
+
+  static Future getCategory() async {
+    try {
+      Response res = await dio.get('/plantCategory',
           options: Options(
             headers: await getHeader(),
           ));
@@ -72,7 +102,9 @@ class ArticleService {
       logger.v(json.decode(res.toString()));
 
       if (res.data['status'] >= 200 && res.data['status'] < 300) {
-        return (res.data['data'] as List).map((val) => val.toString()).toList();
+        return (res.data['data'] as List)
+            .map((val) => PlantCategory.fromJson(val))
+            .toList();
       }
       return res.data['message'];
     } on DioError catch (e) {

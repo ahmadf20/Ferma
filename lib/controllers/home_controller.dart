@@ -1,4 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:ferma/models/plant_model.dart';
+import 'package:ferma/services/plant_service.dart';
+import 'package:ferma/utils/const.dart';
+import 'package:ferma/utils/custom_bot_toast.dart';
 import 'package:ferma/utils/formatting.dart';
 import 'package:ferma/utils/logger.dart';
 import 'package:ferma/utils/shared_preferences.dart';
@@ -15,6 +19,8 @@ class HomeController extends GetxController {
   RxBool isLoading = true.obs;
 
   RxInt carouselIndex = 0.obs;
+
+  RxList<MyPlant> myPlants = <MyPlant>[].obs;
 
   void updateCarouselIndex(int val) {
     carouselIndex.value = val;
@@ -52,25 +58,25 @@ class HomeController extends GetxController {
     long.value = longitude;
   }
 
-  // void fetchData() async {
-  //   try {
-  //     await getMyPlants().then((res) {
-  //       if (res is List<MyPlant>) {
-  //         List<MyPlant> sortedRes = res;
-  //         sortedRes
-  //             .sort((a, b) => (a.isDone! ? 1 : 0).compareTo(b.isDone! ? 1 : 0));
-  //         myPlants.clear();
-  //         myPlants.addAll(sortedRes);
-  //       } else {
-  //         customBotToastText(res);
-  //       }
-  //     });
-  //   } catch (e) {
-  //     customBotToastText(ErrorMessage.general);
-  //   } finally {
-  //     if (isLoading.value) isLoading.toggle();
-  //   }
-  // }
+  void fetchData() async {
+    try {
+      await PlantService.getMyPlants().then((res) {
+        if (res is List<MyPlant>) {
+          List<MyPlant> sortedRes = res;
+          sortedRes
+              .sort((a, b) => (a.isDone! ? 1 : 0).compareTo(b.isDone! ? 1 : 0));
+          myPlants.clear();
+          myPlants.addAll(sortedRes);
+        } else {
+          customBotToastText(res);
+        }
+      });
+    } catch (e) {
+      customBotToastText(ErrorMessage.general);
+    } finally {
+      if (isLoading.value) isLoading.toggle();
+    }
+  }
 
   // void updateFinishTask(String? id, int count) {
   //   MyPlant temp = myPlants[myPlants.indexWhere((v) => v.id == id)]
@@ -85,7 +91,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     initLocation();
-    // fetchData();
+    fetchData();
     super.onInit();
   }
 }

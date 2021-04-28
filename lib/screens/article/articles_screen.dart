@@ -48,6 +48,7 @@ class ArticlesScreen extends StatelessWidget {
                             suffixIcon: Icon(
                               Icons.search,
                               color: Colors.grey,
+                              size: 25,
                             ),
                             inputTextStyle:
                                 TextStyle(fontWeight: FontWeight.normal),

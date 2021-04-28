@@ -17,10 +17,7 @@ class WeatherService {
             "q": "$lat,$long",
             "days": "3",
           },
-          options: Options(
-            headers: await (getHeader()),
-            responseType: ResponseType.json,
-          ));
+          options: Options(headers: await (getHeader())));
 
       logger.v(json.decode(res.toString()));
 

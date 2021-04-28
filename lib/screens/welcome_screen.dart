@@ -39,7 +39,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Text(
                       "FERMA",
                       style: TextStyle(
-                        fontFamily: "Montserrat",
                         fontWeight: FontWeight.w700,
                         fontSize: 35,
                         color: MyColors.white,

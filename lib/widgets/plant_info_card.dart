@@ -1,7 +1,7 @@
 import 'package:ferma/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 
-class MyCard extends StatelessWidget {
+class PlantInfoCard extends StatelessWidget {
   final String title;
   final String? body;
   final bool showIcon;
@@ -9,7 +9,7 @@ class MyCard extends StatelessWidget {
   final Widget? child;
   final Function? onTap;
 
-  const MyCard({
+  const PlantInfoCard({
     Key? key,
     required this.title,
     this.body,
@@ -45,7 +45,6 @@ class MyCard extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: MyColors.darkGrey,
@@ -58,7 +57,7 @@ class MyCard extends StatelessWidget {
                       body!,
                       style: TextStyle(
                         fontFamily: 'OpenSans',
-                        fontSize: 13,
+                        fontSize: 14,
                         color: MyColors.grey,
                       ),
                     ),

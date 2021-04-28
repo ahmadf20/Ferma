@@ -129,6 +129,7 @@ class EditProfileScreen extends StatelessWidget {
         'assets/images/default_profile_picture.png',
         width: 90,
         height: 90,
+        fit: BoxFit.cover,
       );
     }
   }

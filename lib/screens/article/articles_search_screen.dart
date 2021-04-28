@@ -38,6 +38,7 @@ class ArticlesSearchScreen extends StatelessWidget {
                         suffixIcon: Icon(
                           Icons.search,
                           color: Colors.grey,
+                          size: 25,
                         ),
                         autoFocus: true,
                         inputTextStyle:
