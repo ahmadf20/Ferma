@@ -17,6 +17,7 @@ class Plant {
     this.updatedAt,
     this.cropStatistics,
     this.category,
+    this.type,
   });
 
   String? id;
@@ -32,6 +33,7 @@ class Plant {
   DateTime? updatedAt;
   List<CropStatistic>? cropStatistics;
   PlantCategory? category;
+  PlantType? type;
 
   factory Plant.fromJson(Map<String, dynamic> json) => Plant(
         id: json["id"]?.toString(),
@@ -56,6 +58,7 @@ class Plant {
         category: json["category"] == null
             ? null
             : PlantCategory.fromJson(json["category"]),
+        type: json["type"] == null ? null : PlantType.fromJson(json["type"]),
       );
 }
 
@@ -175,6 +178,18 @@ class PlantCategory {
   factory PlantCategory.fromJson(Map<String, dynamic> json) => PlantCategory(
         id: json["id"]?.toString(),
         articleId: json["article_id"]?.toString(),
+        name: json["name"]?.toString(),
+      );
+}
+
+class PlantType {
+  final String? id;
+  final String? name;
+
+  PlantType({this.id, this.name});
+
+  factory PlantType.fromJson(Map<String, dynamic> json) => PlantType(
+        id: json["id"]?.toString(),
         name: json["name"]?.toString(),
       );
 }

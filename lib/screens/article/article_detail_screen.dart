@@ -1,4 +1,3 @@
-import 'package:ferma/controllers/article_controller.dart';
 import 'package:ferma/controllers/article_detail_controller.dart';
 import 'package:ferma/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';

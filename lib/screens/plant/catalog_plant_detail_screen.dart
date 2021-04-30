@@ -118,11 +118,11 @@ class CatalogDetailScreen extends StatelessWidget {
             spacing: 15,
             children: [
               buildLabel(
-                plant.category?.name ?? '',
+                plant.category?.name ?? '-',
                 Icons.category_outlined,
               ),
               buildLabel(
-                plant.categoryId ?? '', //TODOl change to type name
+                plant.type?.name ?? '-',
                 Icons.layers_outlined,
               ),
             ],

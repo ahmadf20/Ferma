@@ -12,7 +12,6 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
-    //TODO: Add function to refresh token
     fetchUserData();
     super.onInit();
   }

@@ -138,7 +138,7 @@ class _CardItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
               plant!.plantName!,
               style: TextStyle(
@@ -148,14 +148,13 @@ class _CardItem extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 5),
             Row(
               children: [
                 Text(
                   plant!.category?.name ?? '',
                   style: TextStyle(
                     fontFamily: 'OpenSans',
-                    fontSize: 10,
+                    fontSize: 12,
                     color: MyColors.grey,
                   ),
                 ),

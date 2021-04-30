@@ -15,6 +15,7 @@ class MyTextField extends StatelessWidget {
   final Function? onChanged;
   final TextStyle? inputTextStyle;
   final bool autoFocus;
+  final int maxLines;
 
   const MyTextField({
     Key? key,
@@ -30,6 +31,7 @@ class MyTextField extends StatelessWidget {
     this.fillColor,
     this.inputTextStyle,
     this.autoFocus = false,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,8 @@ class MyTextField extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: MyColors.darkGrey,
         ).merge(inputTextStyle),
+        minLines: 1,
+        maxLines: maxLines,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         autofocus: autoFocus,
         validator: validator,

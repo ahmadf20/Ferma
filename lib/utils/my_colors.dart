@@ -11,4 +11,5 @@ class MyColors {
   static const Color transparent = Colors.transparent;
   static const Color yellowFaded = Color(0xFFFFF1CE);
   static const Color yellow = Color(0xFFF8AE30);
+  static const Color lightGreen = Color(0xFFEDFBE8);
 }

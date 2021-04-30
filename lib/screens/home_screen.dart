@@ -4,7 +4,9 @@ import 'package:ferma/controllers/home_controller.dart';
 import 'package:ferma/controllers/profile_controller.dart';
 import 'package:ferma/controllers/weather_controller.dart';
 import 'package:ferma/models/article_model.dart';
+import 'package:ferma/models/plant_model.dart';
 import 'package:ferma/screens/article/articles_screen.dart';
+import 'package:ferma/screens/chatbot/chatbot_screen.dart';
 import 'package:ferma/screens/profile/profile_screen.dart';
 import 'package:ferma/screens/weather_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
@@ -21,10 +23,10 @@ import 'plant/catalog_plant_screen.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  final HomeController homeController = Get.put(HomeController());
   final WeatherController weatherController = Get.put(WeatherController());
   final ProfileController profileController = Get.put(ProfileController());
   final ArticleController articleController = Get.put(ArticleController());
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +197,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-
           Obx(
             () => articleController.articles.isNotEmpty
                 ? Padding(
@@ -219,39 +220,44 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: MyColors.yellowFaded,
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.headset_mic_outlined,
-                        color: MyColors.yellow,
-                        size: 35,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Need Help?',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: MyColors.darkGrey,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(ChatebotScreen());
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: MyColors.yellowFaded,
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.headset_mic_outlined,
+                          color: MyColors.yellow,
+                          size: 35,
                         ),
-                      ),
-                      SizedBox(height: 2.5),
-                      Text(
-                        'Talk to out AI bot to get the best experience!',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'OpenSans',
-                          color: MyColors.grey,
+                        SizedBox(height: 10),
+                        Text(
+                          'Need Help?',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: MyColors.darkGrey,
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 2.5),
+                        Text(
+                          'Talk to out AI bot to get the best experience!',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'OpenSans',
+                            color: MyColors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -274,7 +280,7 @@ class HomeScreen extends StatelessWidget {
                                 if (!(weatherController.weather.isBlank ??
                                     true))
                                   loadImage(
-                                      'https:${weatherController.weather.value.current!.condition!.icon}',
+                                      'https:${weatherController.weather.value.current?.condition?.icon ?? ''}',
                                       width: 35,
                                       height: 35),
                                 SizedBox(height: 10),
@@ -304,7 +310,6 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 30),
-
           Row(
             children: [
               Text(
@@ -338,144 +343,140 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-
           SizedBox(height: 20),
-
-          SizedBox(height: 20),
-          // Obx(
-          //   () => homeController.isLoading.value
-          //       ? Padding(
-          //           padding: const EdgeInsets.only(top: 75),
-          //           child: loadingIndicator(),
-          //         )
-          //       : ListView.builder(
-          //           padding: EdgeInsets.only(bottom: 75),
-          //           physics: NeverScrollableScrollPhysics(),
-          //           shrinkWrap: true,
-          //           itemCount: homeController.myPlants.length,
-          //           itemBuilder: (context, index) {
-          //             return _MyPlantCard(
-          //               data: homeController.myPlants[index],
-          //             );
-          //           },
-          //         ),
-          // ),
+          Obx(
+            () => homeController.isLoading.value
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 75),
+                    child: loadingIndicator(),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.only(bottom: 75),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: homeController.myPlants.length,
+                    itemBuilder: (context, index) {
+                      return _MyPlantCard(
+                        homeController.myPlants[index],
+                      );
+                    },
+                  ),
+          ),
         ],
       ),
     );
   }
 }
 
-// class _MyPlantCard extends StatelessWidget {
-//   final MyPlant? data;
+class _MyPlantCard extends StatelessWidget {
+  final MyPlant data;
 
-//   const _MyPlantCard({Key? key, this.data}) : super(key: key);
+  const _MyPlantCard(this.data, {Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () => Get.to(MyPlantDetailScreen(
-//         data: data,
-//       )),
-//       child: Container(
-//         margin: EdgeInsets.only(bottom: 15),
-//         padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.circular(10),
-//           boxShadow: [
-//             BoxShadow(
-//               color: Colors.black.withAlpha(25),
-//               blurRadius: 35,
-//               offset: Offset(0, 3),
-//             ),
-//           ],
-//         ),
-//         child: Column(
-//           children: [
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: Column(
-//                     children: [
-//                       Row(
-//                         children: [
-//                           Expanded(
-//                             child: Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Text(
-//                                   data!.name!,
-//                                   style: TextStyle(
-//                                     fontSize: 16,
-//                                     fontWeight: FontWeight.w700,
-//                                     color: MyColors.darkGrey,
-//                                   ),
-//                                 ),
-//                                 SizedBox(height: 3),
-//                                 Text(
-//                                   '${data!.plantName} - ' +
-//                                       (data!.isDone!
-//                                           ? 'Finish'
-//                                           : '${data!.finishTask}/${data!.totalTask} Tasks'),
-//                                   style: TextStyle(
-//                                     fontFamily: 'OpenSans',
-//                                     fontSize: 12,
-//                                     color: MyColors.grey,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                           Container(
-//                             height: 35,
-//                             width: 35,
-//                             child: VerticalDivider(
-//                               color: MyColors.grey,
-//                             ),
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               Text(
-//                                 'Progress',
-//                                 style: TextStyle(
-//                                   fontFamily: 'OpenSans',
-//                                   fontSize: 10,
-//                                   color: MyColors.grey,
-//                                 ),
-//                               ),
-//                               SizedBox(height: 3),
-//                               Text(
-//                                 '${data!.progress}%',
-//                                 style: TextStyle(
-//                                   fontSize: 20,
-//                                   fontWeight: FontWeight.w700,
-//                                   color: MyColors.darkGrey,
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                       SizedBox(height: 15),
-//                       LinearPercentIndicator(
-//                         padding: EdgeInsets.symmetric(horizontal: 5),
-//                         lineHeight: 5,
-//                         percent: double.parse(data!.progress!) / 100,
-//                         progressColor: MyColors.gold,
-//                         backgroundColor: MyColors.lightGrey,
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 SizedBox(width: 15),
-//                 loadImage(data!.picture, height: 85),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      // onTap: () => Get.to(MyPlantDetailScreen(
+      //   data: data,
+      // )),
+      onTap: () {},
+      child: Container(
+        margin: EdgeInsets.only(bottom: 15),
+        padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(25),
+              blurRadius: 35,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.name ?? '-',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: MyColors.darkGrey,
+                                  ),
+                                ),
+                                SizedBox(height: 3),
+                                Text(
+                                  '${data.name} - ' +
+                                      (data.isDone! ? 'Finish' : '1/2 Tasks'),
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 12,
+                                    color: MyColors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 35,
+                            width: 35,
+                            child: VerticalDivider(
+                              color: MyColors.grey,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Progress',
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 10,
+                                  color: MyColors.grey,
+                                ),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                '2%',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: MyColors.darkGrey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15),
+                      // LinearPercentIndicator(
+                      //   padding: EdgeInsets.symmetric(horizontal: 5),
+                      //   lineHeight: 5,
+                      //   percent: double.parse(data!.progress!) / 100,
+                      //   progressColor: MyColors.gold,
+                      //   backgroundColor: MyColors.lightGrey,
+                      // ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 15),
+                // loadImage(data., height: 85),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

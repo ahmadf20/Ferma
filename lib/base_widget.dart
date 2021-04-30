@@ -1,6 +1,7 @@
 import 'package:ferma/screens/home_screen.dart';
 import 'package:ferma/utils/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'screens/welcome_screen.dart';
 import 'utils/shared_preferences.dart';
@@ -21,10 +22,24 @@ class _BaseWidgetState extends State<BaseWidget> {
     if (mounted) setState(() {});
   }
 
+  Future<void> getLocationPermission() async {
+    // You can can also directly ask the permission about its status.
+    if (await Permission.location.isPermanentlyDenied) {
+      // The OS restricts access, for example because of parental controls.
+      await openAppSettings();
+    }
+
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+    ].request();
+    print(statuses[Permission.location]);
+  }
+
   @override
   void initState() {
     super.initState();
     getSavedToken();
+    getLocationPermission();
   }
 
   @override
