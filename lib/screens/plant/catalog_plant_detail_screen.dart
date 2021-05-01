@@ -1,4 +1,4 @@
-import 'package:ferma/controllers/catalog_controller.dart';
+import 'package:ferma/controllers/plant/catalog_controller.dart';
 import 'package:ferma/models/plant_model.dart';
 import 'package:ferma/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';

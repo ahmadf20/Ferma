@@ -3,7 +3,7 @@ import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ferma/controllers/home_controller.dart';
-import 'package:ferma/controllers/profile_controller.dart';
+import 'package:ferma/controllers/profile/profile_controller.dart';
 import 'package:ferma/screens/auth_screen.dart';
 import 'package:ferma/screens/profile/edit_profile_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
@@ -28,15 +28,15 @@ class ProfileScreen extends StatelessWidget {
                 centerTitle: false,
                 actions: [
                   if (!s.isLoading.value)
-                    GestureDetector(
-                      onTap: () async {
-                        await SharedPrefs.logOut().then((res) {
-                          if (res) Get.offAll(AuthScreen());
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 25, 0),
-                        child: Icon(Icons.exit_to_app_rounded),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        onPressed: () async {
+                          await SharedPrefs.logOut().then((res) {
+                            if (res) Get.offAll(AuthScreen());
+                          });
+                        },
+                        icon: Icon(Icons.exit_to_app_rounded),
                       ),
                     )
                 ],

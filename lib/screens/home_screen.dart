@@ -1,18 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ferma/controllers/article_controller.dart';
+import 'package:ferma/controllers/article/article_controller.dart';
 import 'package:ferma/controllers/home_controller.dart';
-import 'package:ferma/controllers/profile_controller.dart';
+import 'package:ferma/controllers/myplant/myplant_controller.dart';
+import 'package:ferma/controllers/profile/profile_controller.dart';
 import 'package:ferma/controllers/weather_controller.dart';
 import 'package:ferma/models/article_model.dart';
-import 'package:ferma/models/plant_model.dart';
 import 'package:ferma/screens/article/articles_screen.dart';
 import 'package:ferma/screens/chatbot/chatbot_screen.dart';
+import 'package:ferma/screens/myplant/myplant_screen.dart';
 import 'package:ferma/screens/profile/profile_screen.dart';
 import 'package:ferma/screens/weather_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
 import 'package:ferma/utils/my_text_style.dart';
 import 'package:ferma/widgets/load_image.dart';
 import 'package:ferma/widgets/loading_indicator.dart';
+import 'package:ferma/widgets/myplant_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -23,10 +25,12 @@ import 'plant/catalog_plant_screen.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+//TODO: BUG: data doesnt update when change account
   final WeatherController weatherController = Get.put(WeatherController());
   final ProfileController profileController = Get.put(ProfileController());
   final ArticleController articleController = Get.put(ArticleController());
   final HomeController homeController = Get.put(HomeController());
+  final MyPlantController myPlantController = Get.put(MyPlantController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,12 @@ class HomeScreen extends StatelessWidget {
           size: 25,
         ),
         elevation: 1,
-        onPressed: () => Get.to(CatalogPlantScreen()),
+        onPressed: () async {
+          await Get.to(() => CatalogPlantScreen())?.then((val) {
+            //TODO: play around with transition
+            if (val) Get.find<MyPlantController>().fetchData();
+          });
+        },
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(25, 40, 25, 0),
@@ -318,34 +327,37 @@ class HomeScreen extends StatelessWidget {
               ),
               Spacer(),
               TextButton(
-                style: ButtonStyle(
-                  overlayColor:
-                      MaterialStateProperty.all(MyColors.primary.withAlpha(50)),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'See All',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
-                        color: MyColors.grey,
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(
+                        MyColors.primary.withAlpha(50)),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'See All',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          color: MyColors.grey,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.arrow_right_alt_rounded,
-                      color: MyColors.primary,
-                    ),
-                  ],
-                ),
-                onPressed: () {},
-              ),
+                      SizedBox(width: 5),
+                      Icon(
+                        Icons.arrow_right_alt_rounded,
+                        color: MyColors.primary,
+                      ),
+                    ],
+                  ),
+                  onPressed: () async {
+                    await Get.to(() => MyPlantScreen())?.then((val) {
+                      if (val) Get.find<MyPlantController>().fetchData();
+                    });
+                  }),
             ],
           ),
           SizedBox(height: 20),
           Obx(
-            () => homeController.isLoading.value
+            () => myPlantController.isLoading.value
                 ? Padding(
                     padding: const EdgeInsets.only(top: 75),
                     child: loadingIndicator(),
@@ -354,128 +366,15 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 75),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: homeController.myPlants.length,
+                    itemCount: myPlantController.myPlants.length,
                     itemBuilder: (context, index) {
-                      return _MyPlantCard(
-                        homeController.myPlants[index],
+                      return MyPlantCard(
+                        myPlantController.myPlants[index],
                       );
                     },
                   ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _MyPlantCard extends StatelessWidget {
-  final MyPlant data;
-
-  const _MyPlantCard(this.data, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      // onTap: () => Get.to(MyPlantDetailScreen(
-      //   data: data,
-      // )),
-      onTap: () {},
-      child: Container(
-        margin: EdgeInsets.only(bottom: 15),
-        padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(25),
-              blurRadius: 35,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data.name ?? '-',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: MyColors.darkGrey,
-                                  ),
-                                ),
-                                SizedBox(height: 3),
-                                Text(
-                                  '${data.name} - ' +
-                                      (data.isDone! ? 'Finish' : '1/2 Tasks'),
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 12,
-                                    color: MyColors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 35,
-                            width: 35,
-                            child: VerticalDivider(
-                              color: MyColors.grey,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Progress',
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 10,
-                                  color: MyColors.grey,
-                                ),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                '2%',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: MyColors.darkGrey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      // LinearPercentIndicator(
-                      //   padding: EdgeInsets.symmetric(horizontal: 5),
-                      //   lineHeight: 5,
-                      //   percent: double.parse(data!.progress!) / 100,
-                      //   progressColor: MyColors.gold,
-                      //   backgroundColor: MyColors.lightGrey,
-                      // ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 15),
-                // loadImage(data., height: 85),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

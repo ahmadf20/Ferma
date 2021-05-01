@@ -53,6 +53,7 @@ class MyTextField extends StatelessWidget {
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: MyColors.darkGrey,
+          fontSize: 14,
         ).merge(inputTextStyle),
         minLines: 1,
         maxLines: maxLines,

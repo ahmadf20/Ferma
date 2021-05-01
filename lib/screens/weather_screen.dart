@@ -156,22 +156,19 @@ class WeatherScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 35),
-                        Text(
-                          'Next 3 Days',
-                          style: MyTextStyle.sectionText,
-                        ),
-                        SizedBox(height: 25),
-                        ...controller.weather.value.forecast!.forecastday!
-                            .map(buildCard)
-                            .toList(),
-                      ],
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 35),
+                      Text(
+                        'Next 3 Days',
+                        style: MyTextStyle.sectionText,
+                      ),
+                      SizedBox(height: 25),
+                      ...controller.weather.value.forecast!.forecastday!
+                          .map(buildCard)
+                          .toList(),
+                    ],
                   ),
                 ],
               ),

@@ -3,7 +3,7 @@ import 'package:ferma/widgets/my_app_bar.dart';
 import 'package:ferma/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ferma/controllers/article_controller.dart';
+import 'package:ferma/controllers/article/article_controller.dart';
 import 'package:ferma/models/article_model.dart';
 import 'package:ferma/screens/article/article_detail_screen.dart';
 import 'package:ferma/widgets/load_image.dart';

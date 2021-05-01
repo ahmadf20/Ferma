@@ -57,7 +57,7 @@ class PlantInfoCard extends StatelessWidget {
                       body!,
                       style: TextStyle(
                         fontFamily: 'OpenSans',
-                        fontSize: 14,
+                        fontSize: 12,
                         color: MyColors.grey,
                       ),
                     ),

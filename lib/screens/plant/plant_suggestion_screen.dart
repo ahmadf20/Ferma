@@ -1,4 +1,4 @@
-import 'package:ferma/controllers/catalog_controller.dart';
+import 'package:ferma/controllers/plant/catalog_controller.dart';
 import 'package:ferma/utils/my_text_style.dart';
 import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:ferma/widgets/filter_tag.dart';

@@ -5,7 +5,7 @@ import 'package:ferma/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ferma/controllers/profile_controller.dart';
+import 'package:ferma/controllers/profile/profile_controller.dart';
 import 'package:ferma/models/user_model.dart';
 import 'package:ferma/utils/const.dart';
 import 'package:ferma/utils/custom_bot_toast.dart';
@@ -114,6 +114,7 @@ class EditProfileController extends GetxController {
         pickedFilePath.value = val.path;
         logger.i('Path: ${val}');
       }
+      logger.v(_pickedFile?.path);
     }).catchError((e) {
       customBotToastText('Akses photo tidak diizinkan');
       logger.e(e);

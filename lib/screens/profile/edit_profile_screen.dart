@@ -4,7 +4,7 @@ import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:ferma/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ferma/controllers/edit_profile_controller.dart';
+import 'package:ferma/controllers/profile/edit_profile_controller.dart';
 import 'package:ferma/utils/my_colors.dart';
 import 'package:ferma/widgets/load_image.dart';
 import 'package:ferma/widgets/my_app_bar.dart';

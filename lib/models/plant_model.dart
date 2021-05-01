@@ -135,39 +135,6 @@ class CropStatistic {
       );
 }
 
-MyPlant myPlantFromJson(String str) => MyPlant.fromJson(json.decode(str));
-
-class MyPlant {
-  MyPlant({
-    this.id,
-    this.name,
-    this.isDone,
-    this.userId,
-    this.plantId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  String? id;
-  String? name;
-  bool? isDone;
-  String? userId;
-  String? plantId;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  factory MyPlant.fromJson(Map<String, dynamic> json) => MyPlant(
-        id: json["id"]?.toString(),
-        name: json["name"]?.toString(),
-        isDone: json["is_done"],
-        userId: json["user_id"]?.toString(),
-        plantId: json["plant_id"]?.toString(),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-      );
-}
-
 class PlantCategory {
   final String? id;
   final String? name;
