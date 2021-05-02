@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:ferma/models/myplant_model.dart';
 import 'package:ferma/services/myplant_service.dart';
+import 'package:ferma/services/plant_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ferma/utils/const.dart';
@@ -83,6 +84,7 @@ class MyPlantDetailController extends GetxController {
         if (res is Activity) {
           activities.add(res);
           controller.clear();
+          customBotToastText('Activity has been added!');
         } else {
           customBotToastText(res);
         }
@@ -100,6 +102,7 @@ class MyPlantDetailController extends GetxController {
       await MyPlantService.delActivity(id).then((res) {
         if (res == true) {
           activities.removeWhere((v) => v.id == id);
+          customBotToastText('Activity has been deleted!');
         } else {
           customBotToastText(res);
         }
@@ -111,23 +114,23 @@ class MyPlantDetailController extends GetxController {
     }
   }
 
-  // void delMyPlant() async {
-  //   BotToast.showLoading();
-  //   try {
-  //     await deleteMyPlant(id).then((res) {
-  //       if (res is bool) {
-  //         Get.find<HomeController>().myPlants.removeWhere((v) => v.id == id);
-  //         Get.back();
-  //       } else {
-  //         customBotToastText(res);
-  //       }
-  //     });
-  //   } catch (e) {
-  //     customBotToastText(ErrorMessage.general);
-  //   } finally {
-  //     BotToast.closeAllLoading();
-  //   }
-  // }
+  void delMyPlant() async {
+    BotToast.showLoading();
+    try {
+      await PlantService.delMyPlant(_plantData.id ?? '').then((res) {
+        if (res == true) {
+          Get.back();
+          customBotToastText('Plant has been deleted!');
+        } else {
+          customBotToastText(res);
+        }
+      });
+    } catch (e) {
+      customBotToastText(ErrorMessage.general);
+    } finally {
+      BotToast.closeAllLoading();
+    }
+  }
 
   // void finishGrowingHandler() async {
   //   try {

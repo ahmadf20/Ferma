@@ -50,7 +50,7 @@ class ChecklistListItem extends StatelessWidget {
           IconButton(
             splashColor: MyColors.grey,
             icon: Image.asset(
-              item.isChecked!
+              (item.isChecked ?? false)
                   ? 'assets/icons/check_true.png'
                   : 'assets/icons/check_false.png',
               width: 20,

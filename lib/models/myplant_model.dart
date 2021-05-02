@@ -14,6 +14,9 @@ class MyPlant {
     this.updatedAt,
     this.plant,
     this.checklists,
+    this.finishTask,
+    this.progress,
+    this.totalTask,
   });
 
   String? id;
@@ -24,6 +27,9 @@ class MyPlant {
   DateTime? createdAt;
   DateTime? updatedAt;
   Plant? plant;
+  String? finishTask;
+  String? totalTask;
+  String? progress;
   List<Checklist>? checklists;
 
   factory MyPlant.fromJson(Map<String, dynamic> json) => MyPlant(
@@ -40,6 +46,9 @@ class MyPlant {
             ? []
             : List<Checklist>.from(
                 json["checklists"].map((x) => Checklist.fromJson(x))),
+        finishTask: json["finish_task"]?.toString(),
+        totalTask: json["total_task"]?.toString(),
+        progress: json["progress"]?.toString(),
       );
 }
 
@@ -69,7 +78,7 @@ class Checklist {
         title: json["title"]?.toString(),
         description: json["description"]?.toString(),
         myplantId: json["myplant_id"]?.toString(),
-        isChecked: json["is_checked"],
+        isChecked: json["is_checked"] ?? false,
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         createdAt: json["createdAt"] == null
             ? null

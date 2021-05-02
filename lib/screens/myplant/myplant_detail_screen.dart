@@ -12,6 +12,7 @@ import 'package:ferma/widgets/load_image.dart';
 import 'package:ferma/widgets/loading_indicator.dart';
 import 'package:ferma/widgets/my_app_bar.dart';
 import 'package:ferma/widgets/my_flat_button.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class MyPlantDetailScreen extends StatelessWidget {
@@ -33,116 +34,142 @@ class MyPlantDetailScreen extends StatelessWidget {
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(60),
-              child: MyAppBar(),
+              child: MyAppBar(
+                actions: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 15),
+                    child: (IconButton(
+                      icon: Image.asset(
+                        'assets/icons/close-outline.png',
+                        width: 28,
+                        height: 28,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Remove Plant',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              content: Text(
+                                'Are you sure want to delete ${s.plant.value.name ?? ''} from your list? \nThis action is irreversible',
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              actionsPadding:
+                                  EdgeInsets.fromLTRB(15, 0, 15, 15),
+                              actions: [
+                                MyFlatButton(
+                                  text: 'Yes, remove',
+                                  onPressed: () {
+                                    Get.back();
+                                    s.delMyPlant();
+                                  },
+                                ),
+                                SizedBox(height: 10),
+                                MyFlatButton(
+                                  text: 'Cancel',
+                                  color: Colors.grey[100],
+                                  textColor: MyColors.darkGrey,
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    )),
+                  ),
+                ],
+              ),
             ),
             body: ListView(
               padding: EdgeInsets.fromLTRB(25, 25, 25, 25),
               children: [
-                Stack(
-                  children: [
-                    Positioned(
-                      right: 0,
-                      child: loadImage(
-                        s.plant.value.plant?.picture,
-                        alignment: Alignment.centerRight,
-                        height: 175,
-                      ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    Container(
-                      width: Get.width / 2,
-                      height: 180,
-                      margin: EdgeInsets.only(bottom: 25),
-                      alignment: Alignment.bottomLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: EdgeInsets.all(20),
+                    child: loadImage(
+                      s.plant.value.plant?.picture,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: Get.width / 2,
+                  height: 180,
+                  margin: EdgeInsets.only(bottom: 25),
+                  alignment: Alignment.bottomLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        s.plant.value.name ?? '',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        s.plant.value.plant?.plantName ?? '-',
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: 16,
+                          color: MyColors.grey,
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                      Row(
                         children: [
                           Text(
-                            s.plant.value.name ?? '',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            s.plant.value.plant?.plantName ?? '-',
+                            'Progress',
                             style: TextStyle(
                               fontFamily: 'OpenSans',
-                              fontSize: 16,
+                              fontSize: 10,
                               color: MyColors.grey,
                             ),
                           ),
-                          SizedBox(height: 25),
-                          Container(
-                            width: 150,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Progress',
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 10,
-                                    color: MyColors.grey,
-                                  ),
-                                ),
-                                // Text(
-                                //   '${data!.progress}%',
-                                //   style: TextStyle(
-                                //     fontFamily: 'Montserrat',
-                                //     fontSize: 20,
-                                //     fontWeight: FontWeight.w700,
-                                //     color: MyColors.darkGrey,
-                                //   ),
-                                // ),
-                              ],
+                          Spacer(),
+                          Text(
+                            '${data.progress}%',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: MyColors.darkGrey,
                             ),
                           ),
-                          SizedBox(height: 5),
-                          // LinearPercentIndicator(
-                          //   padding: EdgeInsets.symmetric(horizontal: 5),
-                          //   width: 150,
-                          //   lineHeight: 5,
-                          //   percent: double.parse(data!.progress!) / 100,
-                          //   progressColor: MyColors.gold,
-                          //   backgroundColor: MyColors.lightGrey,
-                          // ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                if (!isDone) SizedBox(height: 50),
-                if (!isDone)
-                  Container(
-                    width: Get.width,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: MyFlatButton(
-                            text: 'Stop',
-                            color: MyColors.lightGrey,
-                            textColor: MyColors.darkGrey,
-                            onPressed: () {
-                              // s.delMyPlant();
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: MyFlatButton(
-                            text: 'Finish',
-                            onPressed: () {
-                              // s.finishGrowingHandler();
-                              // Get.back();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      SizedBox(height: 5),
+                      LinearPercentIndicator(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        lineHeight: 5,
+                        percent: double.parse(data.progress ?? '0') / 100,
+                        progressColor: MyColors.gold,
+                        backgroundColor: MyColors.lightGrey,
+                      ),
+                    ],
                   ),
-                SizedBox(height: 25),
+                ),
                 Divider(
                   color: Colors.grey[400],
                 ),

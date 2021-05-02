@@ -25,7 +25,7 @@ class MyFlatButton extends StatelessWidget {
         onPressed: onPressed as void Function()?,
         style: TextButton.styleFrom(
           backgroundColor: color ?? MyColors.primary,
-          primary: MyColors.gold,
+          primary: MyColors.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

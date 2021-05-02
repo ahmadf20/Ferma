@@ -4,6 +4,7 @@ import 'package:ferma/screens/myplant/myplant_detail_screen.dart';
 import 'package:ferma/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import 'checklist_item.dart';
 import 'load_image.dart';
@@ -59,7 +60,9 @@ class MyPlantCard extends StatelessWidget {
                                 SizedBox(height: 3),
                                 Text(
                                   '${data.plant?.plantName ?? ''} - ' +
-                                      (data.isDone! ? 'Finish' : '1/2 Tasks'),
+                                      (data.finishTask == data.totalTask
+                                          ? 'Finish'
+                                          : '${data.finishTask}/${data.totalTask} Tasks'),
                                   style: TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontSize: 12,
@@ -89,7 +92,7 @@ class MyPlantCard extends StatelessWidget {
                               ),
                               SizedBox(height: 3),
                               Text(
-                                '2%',
+                                '${data.progress}%',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -101,13 +104,13 @@ class MyPlantCard extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 15),
-                      // LinearPercentIndicator(
-                      //   padding: EdgeInsets.symmetric(horizontal: 5),
-                      //   lineHeight: 5,
-                      //   percent: double.parse(data!.progress!) / 100,
-                      //   progressColor: MyColors.gold,
-                      //   backgroundColor: MyColors.lightGrey,
-                      // ),
+                      LinearPercentIndicator(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        lineHeight: 5,
+                        percent: double.parse(data.progress ?? '0') / 100,
+                        progressColor: MyColors.gold,
+                        backgroundColor: MyColors.lightGrey,
+                      ),
                     ],
                   ),
                 ),
