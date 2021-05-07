@@ -1,6 +1,7 @@
 import 'package:ferma/utils/my_colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTextField extends StatelessWidget {
   final String? label;
@@ -16,6 +17,7 @@ class MyTextField extends StatelessWidget {
   final TextStyle? inputTextStyle;
   final bool autoFocus;
   final int maxLines;
+  final TextInputType textInputType;
 
   const MyTextField({
     Key? key,
@@ -32,6 +34,7 @@ class MyTextField extends StatelessWidget {
     this.inputTextStyle,
     this.autoFocus = false,
     this.maxLines = 1,
+    this.textInputType = TextInputType.text,
   }) : super(key: key);
 
   @override
@@ -60,6 +63,11 @@ class MyTextField extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         autofocus: autoFocus,
         validator: validator,
+        keyboardType: textInputType,
+        inputFormatters: [
+          if (textInputType == TextInputType.number)
+            FilteringTextInputFormatter.digitsOnly,
+        ],
         decoration: InputDecoration(
           labelStyle: TextStyle(
             fontFamily: 'OpenSans',

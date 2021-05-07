@@ -1,6 +1,7 @@
 import 'package:ferma/controllers/myplant/myplant_controller.dart';
 import 'package:ferma/models/myplant_model.dart';
 import 'package:ferma/screens/myplant/myplant_detail_screen.dart';
+import 'package:ferma/utils/formatting.dart';
 import 'package:ferma/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -107,7 +108,8 @@ class MyPlantCard extends StatelessWidget {
                       LinearPercentIndicator(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         lineHeight: 5,
-                        percent: double.parse(data.progress ?? '0') / 100,
+                        percent: GeneralFormat.getComplatePercentage(
+                            data.progress ?? '0'),
                         progressColor: MyColors.gold,
                         backgroundColor: MyColors.lightGrey,
                       ),

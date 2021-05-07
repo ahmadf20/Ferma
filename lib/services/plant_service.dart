@@ -170,4 +170,37 @@ class PlantService {
       return ErrorMessage.general;
     }
   }
+
+  static Future getPlantSuggestion(String ph, String space, String temp) async {
+    try {
+      Response res = await dio.post('/plantSuggestion',
+          data: {
+            "avg_ph": ph,
+            "avg_space": space,
+            "avg_temperature": temp,
+          },
+          options: Options(headers: await getHeader()));
+
+      logger.v(json.decode(res.toString()));
+
+      if (res.data['status'] >= 200 && res.data['status'] < 300) {
+        return (res.data['data'] as List).map((val) {
+          Plant temp = Plant.fromJson(val['plant']);
+          temp.cropStatistics?.add(CropStatistic.fromJson(val));
+          return temp;
+        }).toList();
+      }
+      return res.data['message'];
+    } on DioError catch (e) {
+      logger.e(e);
+      if (e.response != null) {
+        return e.response?.data['message'];
+      } else {
+        return ErrorMessage.connection;
+      }
+    } catch (e) {
+      logger.e(e);
+      return ErrorMessage.general;
+    }
+  }
 }

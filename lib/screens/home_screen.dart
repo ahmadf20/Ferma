@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(25, 40, 25, 0),
+        padding: const EdgeInsets.fromLTRB(25, 45, 25, 0),
         children: [
           Obx(
             () => Row(
