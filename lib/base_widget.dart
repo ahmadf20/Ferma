@@ -1,10 +1,13 @@
 import 'package:ferma/screens/home_screen.dart';
 import 'package:ferma/utils/logger.dart';
+import 'package:ferma/services/push_local_notif.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'screens/welcome_screen.dart';
 import 'utils/shared_preferences.dart';
+
+import 'package:timezone/timezone.dart' as tz;
 
 class BaseWidget extends StatefulWidget {
   BaseWidget({Key? key}) : super(key: key);
@@ -40,6 +43,16 @@ class _BaseWidgetState extends State<BaseWidget> {
     super.initState();
     getSavedToken();
     getLocationPermission();
+
+    final currentDate = DateTime.now();
+
+    LocalPushNotifService.showPeriodicNotif(
+        'Reminder', 'Don\'t forget to check your plant!',
+        channelId: 'Daily Reminder',
+        channelDesc: 'Daily Reminder',
+        channelName: 'Daily Reminder',
+        scheduledTime: tz.TZDateTime.local(
+            currentDate.year, currentDate.month, currentDate.day, 8, 0));
   }
 
   @override

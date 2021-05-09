@@ -136,12 +136,13 @@ class CatalogDetailScreen extends StatelessWidget {
             title: 'How to Set Up',
             body: 'Learn how to set up the environtment',
             onTap: () => Get.to(
-                ArticleDetailScreen(articleId: plant.category?.articleId)),
+              () => ArticleDetailScreen(articleId: plant.category?.articleId),
+            ),
           ),
           PlantInfoCard(
             title: 'How to Grow It',
             body: 'Learn how to grow the plant like an expert',
-            onTap: () => Get.to(PlantInformationScreen(data: plant)),
+            onTap: () => Get.to(() => PlantInformationScreen(data: plant)),
           ),
           PlantInfoCard(
             title: 'Summary',

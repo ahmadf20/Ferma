@@ -133,9 +133,7 @@ class _LatestPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(ArticleDetailScreen(
-        data: data,
-      )),
+      onTap: () => Get.to(() => ArticleDetailScreen(data: data)),
       child: Container(
         width: 225,
         margin: EdgeInsets.only(right: 25, bottom: 15),
@@ -203,9 +201,9 @@ class _PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(ArticleDetailScreen(
-        data: data,
-      )),
+      onTap: () => Get.to(() => ArticleDetailScreen(
+            data: data,
+          )),
       child: Container(
         color: Colors.transparent,
         margin: EdgeInsets.only(bottom: 30),

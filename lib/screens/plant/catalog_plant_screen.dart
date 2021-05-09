@@ -41,7 +41,7 @@ class CatalogPlantScreen extends StatelessWidget {
                 size: 25,
               ),
               elevation: 1,
-              onPressed: () => Get.to(PlantSuggestionScreen()),
+              onPressed: () => Get.to(() => PlantSuggestionScreen()),
             ),
             body: ListView(
               padding: const EdgeInsets.fromLTRB(25, 0, 25, 50),
@@ -116,7 +116,7 @@ class _CardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(CatalogDetailScreen(plant: plant!)),
+      onTap: () => Get.to(() => CatalogDetailScreen(plant: plant!)),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

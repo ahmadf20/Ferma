@@ -1,3 +1,4 @@
+import 'package:ferma/services/push_local_notif.dart';
 import 'package:ferma/utils/shared_preferences.dart';
 import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:flutter/material.dart';
@@ -103,13 +104,13 @@ class ProfileScreen extends StatelessWidget {
                           'Test Notification',
                           'Make sure your notification works properly',
                           onTap: () {
-                            // showNotification(
-                            //   'Test Notification',
-                            //   'Yayy! The notification works fine!',
-                            //   channelId: 'Test Notification',
-                            //   channelDesc: 'Test Notification',
-                            //   channelName: 'Test Notification',
-                            // );
+                            LocalPushNotifService.showNotification(
+                              'Test Notification',
+                              'Yayy! The notification works fine!',
+                              channelId: 'Test Notification',
+                              channelDesc: 'Test Notification',
+                              channelName: 'Test Notification',
+                            );
                           },
                         ),
                         buildListTile(

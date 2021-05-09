@@ -120,7 +120,9 @@ class MyPlantCard extends StatelessWidget {
                 loadImage(data.plant?.picture, height: 85),
               ],
             ),
-            if (data.checklists != null && data.checklists!.isNotEmpty) ...[
+            if (!(data.isDone ?? false) &&
+                data.checklists != null &&
+                data.checklists!.isNotEmpty) ...[
               Divider(
                 color: Colors.grey,
               ),

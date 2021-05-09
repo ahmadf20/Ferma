@@ -164,9 +164,7 @@ class HomeScreen extends StatelessWidget {
                   builder: (BuildContext context) {
                     return GestureDetector(
                       onTap: () => Get.to(
-                        ArticleDetailScreen(
-                          data: item,
-                        ),
+                        () => ArticleDetailScreen(data: item),
                       ),
                       child: Container(
                         padding: EdgeInsets.fromLTRB(21, 17, 21, 17),
@@ -231,7 +229,7 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(ChatebotScreen());
+                    Get.to(() => ChatebotScreen());
                   },
                   child: Container(
                     decoration: BoxDecoration(
