@@ -20,7 +20,7 @@ class MyPlantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await Get.to(() => MyPlantDetailScreen(data: data))?.then((val) {
-          if (val) Get.find<MyPlantController>().fetchData();
+          if (val == true) Get.find<MyPlantController>().fetchData();
         });
       },
       child: Container(

@@ -58,10 +58,15 @@ class MyPlantController extends GetxController {
     try {
       await MyPlantService.doChecklist(checkListId).then((res) {
         if (res is Checklist) {
-          MyPlant plant = myPlants.firstWhere((val) => val.plantId == plantId);
+          int existing = myPlants.indexWhere((val) => val.id == plantId);
+          if (existing == -1) return;
+
+          MyPlant plant = myPlants[existing];
           if (plant.checklists != null && plant.checklists!.isNotEmpty) {
-            plant.checklists![
-                plant.checklists!.indexWhere((v) => v.id == res.id)] = res;
+            MyPlant temp = plant;
+            temp.checklists![
+                temp.checklists!.indexWhere((v) => v.id == res.id)] = res;
+            myPlants[existing] = temp;
           }
         } else {
           customBotToastText(res);
