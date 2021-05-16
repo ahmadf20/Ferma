@@ -1,7 +1,9 @@
 import 'package:ferma/screens/home_screen.dart';
 import 'package:ferma/utils/logger.dart';
 import 'package:ferma/services/push_local_notif.dart';
+import 'package:ferma/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'screens/welcome_screen.dart';
@@ -38,25 +40,39 @@ class _BaseWidgetState extends State<BaseWidget> {
     print(statuses[Permission.location]);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getSavedToken();
-    getLocationPermission();
+  void initialize() async {
+    await getSavedToken();
+    await getLocationPermission();
 
     final currentDate = DateTime.now();
 
-    LocalPushNotifService.showPeriodicNotif(
+    await LocalPushNotifService.showPeriodicNotif(
         'Reminder', 'Don\'t forget to check your plant!',
         channelId: 'Daily Reminder',
         channelDesc: 'Daily Reminder',
         channelName: 'Daily Reminder',
         scheduledTime: tz.TZDateTime.local(
             currentDate.year, currentDate.month, currentDate.day, 8, 0));
+
+    if (token == null) {
+      await Get.to(() => WelcomeScreen());
+    } else {
+      await Get.to(() => HomeScreen());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
   }
 
   @override
   Widget build(BuildContext context) {
-    return token != null ? HomeScreen() : WelcomeScreen();
+    return Scaffold(
+      body: Center(
+        child: loadingIndicator(),
+      ),
+    );
   }
 }

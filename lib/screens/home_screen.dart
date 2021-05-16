@@ -26,10 +26,10 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
 //TODO: BUG: data doesnt update when change account
+  final HomeController homeController = Get.put(HomeController());
   final WeatherController weatherController = Get.put(WeatherController());
   final ProfileController profileController = Get.put(ProfileController());
   final ArticleController articleController = Get.put(ArticleController());
-  final HomeController homeController = Get.put(HomeController());
   final MyPlantController myPlantController = Get.put(MyPlantController());
 
   @override

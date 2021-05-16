@@ -108,7 +108,11 @@ class EditProfileController extends GetxController {
 
   Future pickImage() async {
     _pickedFile = await _picker
-        .getImage(source: ImageSource.gallery, imageQuality: 80)
+        .getImage(
+      source: ImageSource.gallery,
+      maxWidth: 256,
+      maxHeight: 256,
+    )
         .then((val) {
       if (val != null) {
         pickedFilePath.value = val.path;

@@ -201,7 +201,7 @@ class WeatherScreen extends StatelessWidget {
               color: MyColors.darkGrey,
             ),
           ),
-          Spacer(),
+          SizedBox(width: 25),
           Text(
             '${item.day!.mintempC?.toInt() ?? '-'}ºC',
             style: TextStyle(
@@ -219,23 +219,27 @@ class WeatherScreen extends StatelessWidget {
               color: MyColors.grey,
             ),
           ),
-          Spacer(),
-          Row(
-            children: [
-              loadImage(
-                'https:${item.day!.condition!.icon}',
-                height: 35,
-              ),
-              SizedBox(width: 15),
-              Text(
-                '${item.day?.condition?.text ?? '-'}',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: MyColors.grey,
+          SizedBox(width: 25),
+          Expanded(
+            child: Row(
+              children: [
+                loadImage(
+                  'https:${item.day!.condition!.icon}',
+                  height: 35,
                 ),
-              ),
-            ],
+                SizedBox(width: 15),
+                Expanded(
+                  child: Text(
+                    '${item.day?.condition?.text ?? '-'}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: MyColors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

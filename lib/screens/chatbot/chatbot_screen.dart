@@ -1,60 +1,111 @@
+import 'package:ferma/controllers/chatbot_controller.dart';
+import 'package:ferma/models/chatbot_model.dart';
 import 'package:ferma/utils/my_colors.dart';
-import 'package:ferma/widgets/app_title_bar.dart';
 import 'package:ferma/widgets/my_app_bar.dart';
 import 'package:ferma/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ChatebotScreen extends StatelessWidget {
-  const ChatebotScreen({Key? key}) : super(key: key);
+class ChatebotScreen extends StatefulWidget {
+  ChatebotScreen({Key? key}) : super(key: key);
+
+  @override
+  _ChatebotScreenState createState() => _ChatebotScreenState();
+}
+
+class _ChatebotScreenState extends State<ChatebotScreen> {
+  ScrollController? scrollController;
+
+  void scrollToBottom() {
+    scrollController?.animateTo(
+      0,
+      duration: Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    scrollController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: MyAppBar(),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 25, right: 25),
-            child: AppTitleBar(
-              title: 'Chatbot',
+    return GetX<ChatbotController>(
+        init: ChatbotController(),
+        builder: (s) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: MyAppBar(
+                title: 'ChatBot',
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(25),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildChatItem(context,
-                    ' jadslkfjasldkjf ;lasdj fl;skdjfl;ksdjlfkjads;lfkdlsj  lkjsdl;fksld fl;sdklsdk j ksd lsdk lsdk fsdl;fsd'),
-                _buildChatItem(context, 'Test123'),
-                _buildChatItem(context, 'ASDF', isUser: false),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 25, right: 25),
+                //   child: AppTitleBar(
+                //     title: 'Chatbot',
+                //   ),
+                // ),
+
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    padding: EdgeInsets.all(25),
+                    itemCount: s.messages.length,
+                    reverse: true,
+                    itemBuilder: (context, index) {
+                      Chat item = s.messages[index];
+                      return _buildChatItem(
+                        context,
+                        item.text ?? '',
+                        isUser: item.recipientId == '0',
+                      );
+                    },
+                  ),
+                ),
+
+                if (s.isLoading.value)
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
+                    child: Text('Ferma is typing ...'),
+                  ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(25, 5, 25, 25),
+                  child: MyTextField(
+                    hintText: 'Type your message...',
+                    controller: s.controller,
+                    inputTextStyle: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                    maxLines: 3,
+                    suffix: GestureDetector(
+                      child: Icon(
+                        Icons.send_outlined,
+                        size: 18,
+                        color: MyColors.grey,
+                      ),
+                      onTap: () {
+                        s.getResponse(s.controller.text, scrollToBottom);
+                        s.controller.clear();
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(25, 25, 25, 25),
-            child: MyTextField(
-              hintText: 'Type your message...',
-              inputTextStyle: TextStyle(
-                fontWeight: FontWeight.normal,
-              ),
-              maxLines: 3,
-              suffix: GestureDetector(
-                child: Icon(
-                  Icons.send_outlined,
-                  size: 18,
-                  color: MyColors.grey,
-                ),
-                onTap: () {},
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   Align _buildChatItem(
@@ -78,7 +129,7 @@ class ChatebotScreen extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            color: isUser ? MyColors.primary : MyColors.grey,
+            color: isUser ? MyColors.primary : MyColors.darkGrey,
           ),
         ),
       ),

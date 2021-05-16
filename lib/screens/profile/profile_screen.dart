@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                       child: IconButton(
                         onPressed: () async {
                           await SharedPrefs.logOut().then((res) {
-                            if (res) Get.offAll(AuthScreen());
+                            if (res) Get.offAll(() => AuthScreen());
                           });
                         },
                         icon: Icon(Icons.exit_to_app_rounded),

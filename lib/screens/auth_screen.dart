@@ -31,7 +31,7 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController usernameTC =
       TextEditingController(text: kDebugMode ? 'afaaiz2' : '');
   TextEditingController passwordTC =
-      TextEditingController(text: kDebugMode ? '12345' : '');
+      TextEditingController(text: kDebugMode ? 'pass' : '');
 
   Future loginHandler() async {
     if (usernameTC.text.isEmpty || passwordTC.text.isEmpty) return;
@@ -46,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
     ).then((res) {
       if (res is User) {
         customBotToastText('Login success!');
-        Get.offAll(HomeScreen());
+        Get.offAll(() => HomeScreen());
       } else {
         customBotToastText(res);
       }
@@ -74,7 +74,7 @@ class _AuthScreenState extends State<AuthScreen> {
     ).then((res) {
       if (res is User) {
         customBotToastText('Register success!');
-        Get.offAll(HomeScreen());
+        Get.offAll(() => HomeScreen());
       } else {
         customBotToastText(res);
       }
