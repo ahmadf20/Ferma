@@ -9,6 +9,13 @@ import 'package:get/state_manager.dart';
 class ChatbotController extends GetxController {
   RxList<Chat> messageList = <Chat>[].obs;
   RxBool isLoading = false.obs;
+  RxString baseUrl = ''.obs;
+
+  @override
+  void onInit() {
+    fetchBaseUrl();
+    super.onInit();
+  }
 
   final TextEditingController controller = TextEditingController();
 
@@ -23,10 +30,28 @@ class ChatbotController extends GetxController {
     isLoading.toggle();
 
     try {
-      await ChatbotService.getResponse(text).then((res) {
+      await ChatbotService.getResponse(text, baseUrl.value).then((res) {
         if (res is List<Chat>) {
           messageList.addAll(res);
           callback();
+        } else {
+          customBotToastText(res);
+        }
+      });
+    } catch (e) {
+      customBotToastText(ErrorMessage.general);
+    } finally {
+      isLoading.toggle();
+    }
+  }
+
+  void fetchBaseUrl() async {
+    isLoading.toggle();
+
+    try {
+      await ChatbotService.getBaseUrl().then((res) {
+        if (res is String) {
+          baseUrl.value = res;
         } else {
           customBotToastText(res);
         }
