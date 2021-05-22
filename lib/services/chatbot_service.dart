@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:ferma/models/chatbot_model.dart';
 import 'package:ferma/utils/const.dart';

@@ -63,5 +63,12 @@
 		<!-- Permission options for the `photos` group -->
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>photos</string>
+
+		<!-- Added to fix HTTP issue -->
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+		</dict>
 	</dict>
 </plist>
